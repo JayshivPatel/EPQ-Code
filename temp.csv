@@ -1,0 +1,2 @@
+Pclass,Age,SibSp,Parch,Fare,Sex_female,Sex_male,Embarked_C,Embarked_Q,Embarked_S
+2,100,2,2,132,1,0,0,0,1
