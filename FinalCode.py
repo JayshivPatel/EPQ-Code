@@ -236,7 +236,7 @@ def ProfileCreationandTest():
 
 	#This contains the window features, each variable is a different feature
 	window = Tk()
-	window.geometry('1120x630')
+	window.geometry('1200x630')
 	window.title('Predicting Survival of External Profile')
 
 	entry1 = Entry(window)
