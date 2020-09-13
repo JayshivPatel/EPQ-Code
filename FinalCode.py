@@ -1,4 +1,3 @@
-#This is where I am importing all of the necessary modules required for this program
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.impute import SimpleImputer
@@ -34,7 +33,7 @@ def Menu():
 	,' 6) Generate all test predictions', ' 7) View Key for terms referenced', ' 8) Quit']
 
 
-#Here I am putting the entires into a listbox for the user to select from
+#Putting the entires into a listbox for the user to select from
     listbox = Listbox(frame, width = 70)
     listbox.insert(1, options[0])
     listbox.insert(2, options[1])
@@ -216,7 +215,7 @@ def ProfileCreationandTest():
                           ,sex_male, embarked_c, embarked_q, embarked_s)
 
 
-#This is where I write to the temporary file, to then predict from 
+#Writing to the temporary file to predict from it later
         file = open('temp.csv', 'w+')
         
         with file:
@@ -715,8 +714,8 @@ while quitter == False:
     decider = ''
     
     for character in selection:
-		if character.isdigit() == True:
-	    	decider = character
+        if character.isdigit() == True:
+	    decider = character
 	
     if decider == '1':
 	ProfileCreationandTest()
