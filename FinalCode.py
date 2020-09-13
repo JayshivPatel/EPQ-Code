@@ -714,7 +714,7 @@ while quitter == False:
 	decider = ''
 
 	for character in selection:
-	    if character.isdigit() == True:
+		if character.isdigit() == True:
 			decider = character
 
 	if decider == '1':
