@@ -447,8 +447,8 @@ def TrainData():
 	file = open('train.csv', 'r')
 
 	for line in file:
-	    listbox.insert(count, line)
-	   	count+=1
+		listbox.insert(count, line)
+		count+=1
 
 	scrollbar.pack(side=RIGHT, fill=Y)
 	btn1 = Button(window, text = 'BACK', command = goback, font = blarge)
