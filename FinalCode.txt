@@ -1,4 +1,3 @@
-//This is where I am importing all of the necessary modules required for this program
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.impute import SimpleImputer
@@ -34,7 +33,7 @@ procedure Menu()
 	,' 6) Generate all test predictions', ' 7) View Key for terms referenced', ' 8) Quit']
 
 
-//Here I am putting the entires into a listbox for the user to select from
+//Putting the entires into a listbox for the user to select from
     listbox = Listbox(frame, width = 70)
     listbox.insert(1, options[0])
     listbox.insert(2, options[1])
@@ -219,7 +218,7 @@ procedure ProfileCreationandTest()
         updatedprofile = (profile[0], profile[2], profile[3], profile[4], profile[5], sex_female
                           ,sex_male, embarked_c, embarked_q, embarked_s)
 
-//This is where I write to the temporary file, to then predict from 
+//Writing to the temporary file, to then predict from 
         file = openWrite('temp.csv')
         headers = ('Pclass', 'Age', 'SibSp', 'Parch', 'Fare', 'Sex_female', 'Sex_male', 'Embarked_C', 'Embarked_Q', 'Embarked_S')
         file.writerow(headers)
