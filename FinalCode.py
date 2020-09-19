@@ -29,8 +29,8 @@ def Menu():
 	options = [' 1) Create a profile to test its survival'
 	,' 2) Pick an existing profile to predict survival'
 	,' 3) View machine learning model\'s rating of features by importance to survival'
-	,' 4) View Train Data',' 5) View Test Data'
-	,' 6) Generate all test predictions', ' 7) View Key for terms referenced', ' 8) Quit']
+	," 4) View 'Train Data'"," 5) View 'Test Data'"
+	,' 6) Generate all test predictions', ' 7) View key for terms referenced', ' 8) Quit']
 
 
 	#Putting the entires into a listbox for the user to select from
@@ -225,9 +225,8 @@ def ProfileCreationandTest():
 	        write.writerow(updatedprofile)
 
 	    prediction = modelfit_fromsave()
-	    prediction = float(prediction)
-	    prediction = round(prediction, 4)
-	    concatanate = ('Probability of Survival:'+ str(prediction))
+	    probability = str(prediction[0])
+	    concatanate = ('Probability of Survival:'+ probability)
 	#Screen 3
 	    box.showinfo('Prediction', concatanate)
 	    
@@ -676,17 +675,20 @@ def modelfit(test_data):
 	model = XGBRegressor(max_depth = 5, n_estimators = 1000, learning_rate = 0.19, objective = 'reg:squarederror')
 	model.fit(train_X, train_y, early_stopping_rounds = 5, eval_set=[(valid_X, valid_y)], verbose = False)
 	predicted_values = model.predict(test_data)
-    
-    rounded_values = []
 
-	for item in predictions:
+	rounded_values = []
+	count = 0
+	for item in predicted_values:
+#This section ensures that probability of survival does not exceed 1
 		if item > 1:
-			item = 1
-		item = round(item,4)
-		rounded_values.append(item)
+			rounded_values.append(1.0000)
+		else:
+			item = round(item,4)
+			rounded_values.append(item)
+		count+=1
 
 
-	return predicted_values
+	return rounded_values
 #This function utilises a temp csv file to import user data to generate a second
 #dataframe for panadas to use and make a prediction on
 def modelfit_fromsave():
