@@ -378,7 +378,6 @@ def ProfileSelectionandTest():
 
 		predictions = modelfit_test()
 		prediction = predictions[index]
-		prediction = round(prediction, 4)
 		concatanate = 'Probability of Survival:'+str(prediction)
 		#Screen 3
 		box.showinfo('Prediction', concatanate)
@@ -505,15 +504,10 @@ def TestPredictions():
 	listbox = Listbox(frame, width = 70, yscrollcommand = scrollbar.set)
 
 	predictions = modelfit_test()
-	rounded_values = []
-
-	for item in predictions:
-		item = round(item,4)
-		rounded_values.append(item)
 
 	count = 1
 
-	for item in rounded_values:
+	for item in predictions:
 		label = str(count)+ ': '+str(item)
 		listbox.insert(count, label)
 		count+=1
@@ -683,6 +677,15 @@ def modelfit(test_data):
 	model.fit(train_X, train_y, early_stopping_rounds = 5, eval_set=[(valid_X, valid_y)], verbose = False)
 	predicted_values = model.predict(test_data)
     
+    rounded_values = []
+
+	for item in predictions:
+		if item > 1:
+			item = 1
+		item = round(item,4)
+		rounded_values.append(item)
+
+
 	return predicted_values
 #This function utilises a temp csv file to import user data to generate a second
 #dataframe for panadas to use and make a prediction on
