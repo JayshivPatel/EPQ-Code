@@ -1,0 +1,479 @@
+//Fonts
+blarge = 'Helvetica 13 bold'
+large = 'Helvetica 13'
+bold = 'Helvetic 11 bold'
+
+
+
+
+FUNCTION Menu() 
+	LOAD SCREEN 1
+	selection = ''
+	//This subroutine creates a selection confirmation screen
+	FUNCTION dialog()
+		var = box.askyesno('Selection' , 'Your Choice ' + listbox.get(listbox.curselection()).strip('1234567)'))
+		global selection
+		IF var == 1 THEN
+			selection = listbox.get(listbox.curselection())
+				
+			window.destroy()
+
+	ENDFUNCTION
+
+FUNCTION ProfileCreationandTest()
+	LOAD SCREEN 4
+	//This allows the program to detect when all inputs are valid
+	validate = [False,False,False,False,False,False,False]
+
+
+	//These are all validation subroutines that check the validity of entries
+	//They disable entires once they are acceptable
+	FUNCTION check_pclass()
+	    
+	    pclass = entry1.get()
+	    
+	    IF pclass.isalpha() == True or pclass == '' or pclass not in ['1','2','3'] THEN
+	        entry1.configure(fg = 'red')        
+	    
+	    ELSE DO
+	        btn1.configure(fg = 'green')
+	        entry1.config(state = DISABLED)
+	        validate[0] = True
+	    ENDIF
+	ENDFUNCTION
+	FUNCTION check_sex()
+	    
+	    sex = entry2.get()
+	    
+	    IF sex.isalpha() == False  or sex == '' or sex not in['m', 'f'] THEN
+	        entry2.configure(fg = 'red')
+	    
+	    ELSE DO
+	        btn2.configure(fg = 'green')
+	        entry2.config(state = DISABLED)
+	        validate[1] = True
+	    ENDIF
+	ENDFUNCTION
+	FUNCTION check_age()
+	    
+	    age = entry3.get()
+	    
+	    IF age.isalpha() == True  or age == '' or int(age) not in range(1,101) THEN
+	        entry3.configure(fg = 'red')
+	    
+	    ELSE DO
+	        btn3.configure(fg = 'green')
+	        entry3.config(state = DISABLED)
+	        validate[2] = True
+	    ENDIF
+    ENDFUNCTION
+	FUNCTION check_sibsp()
+	    
+	    sibsp = entry4.get()
+	   
+	    IF sibsp.isalpha() == True  or sibsp == '' or int(sibsp) not in range(0,16) THEN
+	        entry4.configure(fg = 'red')
+	    
+	    ELSE DO
+	        btn4.configure(fg = 'green')
+	        entry4.config(state = DISABLED)
+	        validate[3] = True
+	    ENDIF
+	ENDFUNCTION
+	FUNCTION check_parch()
+	    
+	    parch = entry5.get()
+	    
+	    IF parch.isalpha() == True or parch == '' or int(parch) not in range(0,16) THEN
+	        entry5.configure(fg = 'red')
+	    
+	    ELSE DO
+	        btn5.configure(fg = 'green')
+	        entry5.config(state = DISABLED)
+	        validate[4] = True
+	    ENDIF
+    ENDFUNCTION
+	FUNCTION check_fare()
+	    
+	    fare = entry6.get()
+	    
+	    IF fare.isalpha() == True or fare == '' or int(fare) <= 0 THEN
+	        entry6.configure(fg = 'red')
+	    
+	    ELSE DO
+	        btn6.configure(fg = 'green')
+	        entry6.config(state = DISABLED)
+	        validate[5] = True
+	    ENDIF
+    ENDFUNCTION
+	FUNCTION check_embarked()
+	    
+	    embarked = entry7.get().lower()
+	    
+	    IF embarked.isalpha() == False or embarked == '' or embarked not in ['c', 'q', 's'] THEN
+	        entry7.configure(fg = 'red')
+	    
+	    ELSE DO
+	        btn7.configure(fg = 'green')
+	        entry7.config(state = DISABLED)
+	        validate[6] = True
+	    ENDIF
+    ENDFUNCTION
+	//This subroutine checks that all inputs have been previously checked.
+	FUNCTION check_all()
+	    
+	    check = True
+	    
+	    for item in validate
+	        IF item == False THEN
+	            check = False
+	    	ENDIF
+	    IF check == True THEN
+	        profile = (entry1.get(),entry2.get(),entry3.get(),entry4.get(),
+	                   entry5.get(),entry6.get(),entry7.get())
+	        predictor(profile)
+	    
+	    ELSE DO
+	        btn8.configure(fg = 'red')
+	    ENDIF
+    ENDFUNCTION
+	//This checks probability of survival
+	FUNCTION predictor(profile)
+	    
+	    IF profile[2] == 'm' THEN
+	        sex_male = 1
+	        sex_female = 0
+	    
+	    ELSE DO
+	        sex_female = 1
+	        sex_male = 0
+	   
+	    ENDIF
+	    IF profile[6].lower() == 's' THEN
+	        embarked_s = 1
+	        embarked_c = 0
+	        embarked_q = 0
+	    
+	    ELIF profile[6].lower() == 'c' THEN
+	        embarked_c = 1
+	        embarked_s = 0
+	        embarked_q = 0
+	    
+	    ELSE DO
+	        embarked_q = 1
+	        embarked_c = 0
+	        embarked_s = 0
+	    ENDIF
+
+	    updatedprofile = (profile[0], profile[2], profile[3], profile[4], profile[5], sex_female
+	                      ,sex_male, embarked_c, embarked_q, embarked_s)
+
+
+	//Writing to the temporary file to predict from it later
+	    file = OPENWRITE('temp.csv')
+	    
+	    WITH file
+	        write = csv.writer(file)
+	        headers = ('Pclass', 'Age', 'SibSp', 'Parch', 'Fare', 'Sex_female', 'Sex_male', 'Embarked_C', 'Embarked_Q', 'Embarked_S')
+	        write.writerow(headers)
+	        write.writerow(updatedprofile)
+
+	    prediction = modelfit_fromsave()
+	    prediction = float(prediction)
+	    prediction = round(prediction, 4)
+	    concatanate = ('Probability of Survival'+ str(prediction))
+	//Screen 3
+	    box.showinfo('Prediction', concatanate)
+	    
+	    window.destroy()
+
+
+
+ENDFUNCTION
+FUNCTION ProfileSelectionandTest()
+    LOAD SCREEN 5
+	FUNCTION check_answer()
+
+		global answer 
+		answer = entry1.get()
+
+		IF answer.isalpha() == True or answer == '' or int(answer) not in range(1,419) THEN
+		    entry1.configure(fg = 'red')        
+
+		ELSE DO
+			entry1.configure(fg = 'green')
+			global index
+			answer = int(answer)
+			index = answer-1
+			answer = answer+1
+		ENDIF
+		fromcsv()
+	ENDFUNCTION
+	//This outputs the profile and predicted survival
+	FUNCTION fromcsv()
+
+		file = OPENREAD('test.csv')
+
+		WITH file
+		    read = csv.reader(file)
+			
+		    for i in range(1, answer)
+			    next(read)
+			    row = next(read)
+
+		OUTPUT PROFILE
+
+		predict()
+    ENDFUNCTION
+	FUNCTION predict()
+		predictions = modelfit_test()
+		prediction = predictions[index]
+		concatanate = 'Probability of Survival'+str(prediction)
+		//Screen 3
+		box.showinfo('Prediction', concatanate)
+
+		window.destroy()
+    ENDFUNCTION
+
+ENDFUNCTION
+
+FUNCTION FeatureImportance()
+	LOAD SCREEN 6
+ENDFUNCTION
+
+FUNCTION TrainData()
+    LOAD SCREEN 7
+ENDFUNCTION
+
+FUNCTION TestData()
+	LOAD SCREEN 8
+ENDFUNCTION
+
+FUNCTION TestPredictions()
+	LOAD SCREEN 9
+ENDFUNCTION
+
+FUNCTION Key()
+	LOAD SCREEN 10
+ENDFUNCTION
+
+//These two functions are required to imitate the most frequent imputation method with categorical data,
+//port and sex
+FUNCTION imputation_embarked(column)
+    
+	//They operate similarly, with one counting and returning the most frequent sex,and the other the port.
+	S = 0
+	C = 0
+	Q = 0
+
+	FOR item IN column DO
+
+		IF item == 'S' THEN
+		    S+=1
+
+		IF item == 'C' THEN
+		    C+=1
+
+		IF item == 'Q' THEN
+		    Q+=1
+		ENDIF
+	embarked = [S,C,Q]
+	max_embarked = max(embarked)
+
+	IF max_embarked == S THEN
+	    impute_embarked = 'S'
+
+	IF max_embarked == C THEN
+	    impute_embarked = 'C'
+
+	ELSE DO 
+	    impute_embarked = 'Q'
+	ENDIF
+	return impute_embarked
+ENDFUNCTION
+FUNCTION imputation_sex(column)    
+    
+	male = 0
+	female = 0
+
+	FOR item IN column DO
+
+		IF item == 'male' THEN
+		    male+=1
+
+		IF item == 'female'THEN
+		    female+=1
+		ENDIF
+	sex = [male, female]
+	max_sex = max(sex)
+
+	IF max_sex == male THEN
+	    impute_sex = 'male'
+
+	ELSE DO
+	    impute_sex = 'female'
+	ENDIF
+	return impute_sex
+ENDFUNCTION
+//This function is the 'datacleaner'. It performs the rest of the data manipulation
+FUNCTION impute_and_ohencoder(data)
+
+	//First we remove any categorical data - this has already been cleaned
+	num_data = data.drop(['Sex', 'Embarked'], axis=1)
+	imputer = SimpleImputer(strategy = 'most_frequent')
+	imputed_data = pd.DataFrame(imputer.fit_transform(num_data))
+
+	// Imputation removed column names; put them back
+	imputed_data.columns = num_data.columns
+	imputed_data.columns = num_data.columns
+
+	// Getting list of categorical variables
+	s = (data.dtypes == 'object')
+
+	// Making copy to avoid changing original data (when imputing)
+	object_columns = list(s[s].index)
+	data_plus = data[object_columns].copy()
+
+	//Fill in any gaps because we used the most frequent imputer earlier I am copying the behaviour here   
+	impute_embarked = imputation_embarked(data_plus['Embarked'])
+	impute_sex = imputation_sex(data_plus['Sex'])
+
+	// Apply one-hot encoder to each column with categorical data
+	data_plus['Embarked'] = data_plus['Embarked'].fillna(value = impute_embarked, axis = 0)
+	data_plus['Sex'] = data_plus['Sex'].fillna(value = impute_sex, axis = 0)
+	OH_cols = pd.get_dummies(data_plus)
+
+	// Add one-hot encoded columns to numerical features
+	processed_data= pd.concat([imputed_data.reset_index(), OH_cols.reset_index()], axis=1)
+	processed_data = processed_data.drop(['index'], axis =1)
+	processed_data = processed_data.apply(pd.to_numeric)   
+
+	return(processed_data)
+ENDFUNCTION
+//This function extracts the data form the csv file
+FUNCTION preprocessor_train()
+    
+	file_path = 'train.csv'
+	data = pd.read_csv(file_path)
+
+	//I will have to remove the name field as this is irrelevant, the ticket field as this contains both letters and 
+	//numbers and the cabin field as the number of missing entries is high. 
+	features = ['Pclass', 'Sex', 'Age', 'SibSp', 'Parch', 'Fare', 'Embarked']
+	X = data[features]
+	y = data.Survived
+
+	//Split data into train and test segments
+	train_X, valid_X, train_y, valid_y = train_test_split(X, y, random_state = 0)
+	processed_X_train = impute_and_ohencoder(train_X)
+	processed_X_valid = impute_and_ohencoder(valid_X)
+
+	return [processed_X_train,processed_X_valid, train_y, valid_y]
+ENDFUNCTION
+//This function is similar to the previous one, except extracts data from the test file.
+FUNCTION preprocessor_test()
+    
+	file_path = 'test.csv'
+	data = pd.read_csv(file_path)
+	features = ['Pclass', 'Sex', 'Age', 'SibSp', 'Parch', 'Fare', 'Embarked']
+	X = data[features]
+
+	processed_X = impute_and_ohencoder(X)
+
+	return(processed_X)
+ENDFUNCTION
+FUNCTION modelfit(test_data)
+    
+	train_data = preprocessor_train()
+	train_X = train_data[0]
+	valid_X = train_data[1]
+	train_y = train_data[2]
+	valid_y = train_data[3]
+
+	model.fit(GRADIENT BOOSTING)
+	predicted_values = model.predict(test_data)
+    
+    rounded_values = []
+
+	FOR item IN predictions DO
+		IF item > 1 THEN
+			item = 1
+		ENDIF
+		item = round(item,4)
+		rounded_values.append(item)
+	ENDFOR
+
+	return predicted_values
+ENDFUNCTION
+//This function utilises a temp csv file to import user data to generate a second
+//dataframe for panadas to use and make a prediction on
+FUNCTION modelfit_fromsave()
+    
+	file_path = 'temp.csv'
+	test_data = pd.read_csv(file_path)
+
+	return (modelfit(test_data))
+ENDFUNCTION
+//This function generates test predictions
+FUNCTION modelfit_test()
+    
+	train_data = preprocessor_train()
+	test_data = preprocessor_test()
+
+	return (modelfit(test_data))
+
+ENDFUNCTION
+//Allows option 8 to quit
+quitter = False
+
+
+//Main program
+WHILE quitter == False DO
+
+	Menu()
+
+	decider = ''
+
+	FOR character IN selection DO
+		IF character.isdigit() == True THEN
+			decider = character
+
+	IF decider == '1' THEN
+		ProfileCreationandTest()
+	    
+		continue
+
+	ELIF decider == '2' THEN
+		ProfileSelectionandTest()
+	    
+		continue
+
+	ELIF decider == '3' THEN
+		FeatureImportance()
+	    
+		continue
+
+	ELIF decider == '4' THEN
+		TrainData()
+	    
+		continue
+
+	ELIF decider == '5' THEN
+		TestData()
+	    
+		continue
+
+	ELIF decider == '6'
+		TestPredictions() THEN
+	    
+		continue
+
+	ELIF decider == '7' THEN
+		Key()
+	    
+		continue
+
+	ELSE DO
+		quitter = True
+	    
+	ENDIF
+ENDWHILE
