@@ -1,3 +1,7 @@
+GLOBAL selection
+GLOBAL answer 
+GLOBAL index
+
 PROCEDURE Menu() 
 
 	LOAD SCREEN 1
@@ -6,11 +10,9 @@ PROCEDURE Menu()
 
 	PROCEDURE dialog()
 
-		var = box.askyesno('Selection' , 'Your Choice ' + listbox.get(listbox.curselection()).strip('1234567)'))
-		global selection
+		var = ASKYESNO
 		IF var == 1 THEN
-			selection = listbox.get(listbox.curselection())
-				
+			selection = GET(ANSWER)
 			window.destroy()
 		ENDIF
 
@@ -30,11 +32,11 @@ PROCEDURE ProfileCreationandTest()
 		pclass = entry1.get()
 
 		IF pclass.isalpha() == True or pclass == '' or pclass not in ['1','2','3'] THEN
-			entry1.configure(fg = 'red')
+			ENTRY.COLOUR(RED)
 
 		ELSE DO
-			btn1.configure(fg = 'green')
-			entry1.config(state = DISABLED)
+			BUTTON.STATE(GREEN)
+			ENTRY.STATE(DISABLED)
 			validate[0] = True
 		ENDIF
 
@@ -45,11 +47,11 @@ PROCEDURE ProfileCreationandTest()
 		sex = entry2.get()
 
 		IF sex.isalpha() == False  or sex == '' or sex not in['m', 'f'] THEN
-			entry2.configure(fg = 'red')
+			BUTTON.STATE(GREEN)
 
 		ELSE DO
-			btn2.configure(fg = 'green')
-			entry2.config(state = DISABLED)
+			BUTTON.STATE(GREEN)
+			ENTRY.STATE(DISABLED)
 			validate[1] = True
 		ENDIF
 
@@ -60,11 +62,11 @@ PROCEDURE ProfileCreationandTest()
 		age = entry3.get()
 
 		IF age.isalpha() == True  or age == '' or int(age) not in range(1,101) THEN
-			entry3.configure(fg = 'red')
+			BUTTON.STATE(RED)
 
 		ELSE DO
-			btn3.configure(fg = 'green')
-			entry3.config(state = DISABLED)
+			BUTTON.STATE(GREEN)
+			ENTRY.STATE(DISABLED)
 			validate[2] = True
 		ENDIF
 
@@ -75,11 +77,11 @@ PROCEDURE ProfileCreationandTest()
 		sibsp = entry4.get()
 
 		IF sibsp.isalpha() == True  or sibsp == '' or int(sibsp) not in range(0,16) THEN
-			entry4.configure(fg = 'red')
+			BUTTON.STATE(RED)
 
 		ELSE DO
-			btn4.configure(fg = 'green')
-			entry4.config(state = DISABLED)
+			BUTTON.STATE(GREEN)
+			ENTRY.STATE(DISABLED)
 			validate[3] = True
 		ENDIF
 
@@ -90,11 +92,11 @@ PROCEDURE ProfileCreationandTest()
 		parch = entry5.get()
 
 		IF parch.isalpha() == True or parch == '' or int(parch) not in range(0,16) THEN
-			entry5.configure(fg = 'red')
+			BUTTON.STATE(RED)
 
 		ELSE DO
-			btn5.configure(fg = 'green')
-			entry5.config(state = DISABLED)
+			BUTTON.STATE(GREEN)
+			ENTRY.STATE(DISABLED)
 			validate[4] = True
 		ENDIF
 
@@ -105,11 +107,11 @@ PROCEDURE ProfileCreationandTest()
 		fare = entry6.get()
 
 		IF fare.isalpha() == True or fare == '' or int(fare) <= 0 THEN
-			entry6.configure(fg = 'red')
+			BUTTON.STATE(RED)
 
 		ELSE DO
-			btn6.configure(fg = 'green')
-			entry6.config(state = DISABLED)
+			BUTTON.STATE(GREEN)
+			ENTRY.STATE(DISABLED)
 			validate[5] = True
 		ENDIF
 
@@ -120,11 +122,11 @@ PROCEDURE ProfileCreationandTest()
 		embarked = entry7.get().lower()
 
 		IF embarked.isalpha() == False or embarked == '' or embarked not in ['c', 'q', 's'] THEN
-			entry7.configure(fg = 'red')
+			BUTTON.STATE(RED)
 
 		ELSE DO
-			btn7.configure(fg = 'green')
-			entry7.config(state = DISABLED)
+			BUTTON.STATE(GREEN)
+			ENTRY.STATE(DISABLED)
 			validate[6] = True
 		ENDIF
 
@@ -144,10 +146,10 @@ PROCEDURE ProfileCreationandTest()
 		IF check == True THEN
 			profile = (entry1.get(),entry2.get(),entry3.get(),entry4.get(),
 						entry5.get(),entry6.get(),entry7.get())
-				predictor(profile)
+			predictor(profile)
 
 		ELSE DO
-			btn8.configure(fg = 'red')
+			BUTTON.STATE(red')
 		ENDIF
 
 	ENDPROCEDURE
@@ -213,15 +215,13 @@ PROCEDURE ProfileSelectionandTest()
 
 	PROCEDURE check_answer()
 
-		global answer 
 		answer = entry1.get()
 
 		IF answer.isalpha() == True or answer == '' or int(answer) not in range(1,419) THEN
-			entry1.configure(fg = 'red')
+			BUTTON.STATE(RED)
 
 		ELSE DO
-			entry1.configure(fg = 'green')
-			global index
+			BUTTON.STATE(GREEN)
 			answer = int(answer)
 			index = answer-1
 			answer = answer+1
@@ -260,26 +260,6 @@ PROCEDURE ProfileSelectionandTest()
 		window.destroy()
     ENDPROCEDURE
 
-ENDPROCEDURE
-
-PROCEDURE FeatureImportance()
-	LOAD SCREEN 6
-ENDPROCEDURE
-
-PROCEDURE TrainData()
-	LOAD SCREEN 7
-ENDPROCEDURE
-
-PROCEDURE TestData()
-	LOAD SCREEN 8
-ENDPROCEDURE
-
-PROCEDURE TestPredictions()
-	LOAD SCREEN 9
-ENDPROCEDURE
-
-PROCEDURE Key()
-	LOAD SCREEN 10
 ENDPROCEDURE
 
 //These two functions are required to imitate the most frequent imputation method with categorical data,
@@ -339,6 +319,7 @@ PROCEDURE imputation_sex(column)
 		ENDIF
 
 	ENDFOR
+	
 	sex = [male, female]
 	max_sex = max(sex)
 
@@ -388,7 +369,9 @@ PROCEDURE impute_and_ohencoder(data)
 	processed_data = processed_data.apply(pd.to_numeric)   
 
 	return(processed_data)
+
 ENDPROCEDURE
+
 //This function extracts the data form the csv file
 PROCEDURE preprocessor_train()
     
@@ -409,6 +392,7 @@ PROCEDURE preprocessor_train()
 	return [processed_X_train,processed_X_valid, train_y, valid_y]
 
 ENDPROCEDURE
+
 //This function is similar to the previous one, except extracts data from the test file.
 PROCEDURE preprocessor_test()
     
@@ -430,7 +414,7 @@ PROCEDURE modelfit(test_data)
 	train_y = train_data[2]
 	valid_y = train_data[3]
 
-	model.fit(GRADIENT BOOSTING)
+	model.fit(GRADIENT BOOSTING MODEL)
 	predicted_values = model.predict(test_data)
     
 	rounded_values = []
@@ -439,6 +423,7 @@ PROCEDURE modelfit(test_data)
 		IF item > 1 THEN
 			item = 1
 		ENDIF
+
 		item = round(item,4)
 		rounded_values.append(item)
 	ENDFOR
@@ -483,6 +468,7 @@ WHILE quitter == False DO
 		IF character.isdigit() == True THEN
 			decider = character
 	ENDFOR
+
 	IF decider == '1' THEN
 		ProfileCreationandTest()
 	    
@@ -494,27 +480,27 @@ WHILE quitter == False DO
 		continue
 
 	ELIF decider == '3' THEN
-		FeatureImportance()
+		LOAD SCREEN 6
 	    
 		continue
 
 	ELIF decider == '4' THEN
-		TrainData()
+		LOAD SCREEN 7
 	    
 		continue
 
 	ELIF decider == '5' THEN
-		TestData()
+		LOAD SCREEN 8
 	    
 		continue
 
-	ELIF decider == '6'
-		TestPredictions() THEN
+	ELIF decider == '6' THEN
+		LOAD SCREEN 9 
 	    
 		continue
 
 	ELIF decider == '7' THEN
-		Key()
+		LOAD SCREEN 10
 	    
 		continue
 
