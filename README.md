@@ -5,3 +5,5 @@ Please see FinalCode.py (.txt for psuedocode) for the finished product - it requ
 Other code and files have been kept for evidence
 
 Dataset available on Kaggle.com
+
+Thanks to HCaushi for helping me set this page up!
