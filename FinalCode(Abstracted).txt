@@ -1,11 +1,3 @@
-//Fonts
-blarge = 'Helvetica 13 bold'
-large = 'Helvetica 13'
-bold = 'Helvetic 11 bold'
-
-
-
-
 FUNCTION Menu() 
 	LOAD SCREEN 1
 	selection = ''
@@ -242,7 +234,7 @@ FUNCTION FeatureImportance()
 ENDFUNCTION
 
 FUNCTION TrainData()
-    LOAD SCREEN 7
+        LOAD SCREEN 7
 ENDFUNCTION
 
 FUNCTION TestData()
