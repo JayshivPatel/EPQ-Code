@@ -2,7 +2,7 @@
 
 #### Please see FinalCode.py for the finished product - it requires files: graph.gif, key.gif, test.csv, train.csv in the 'Dependencies' folder
 
-# Python Libraries required:
+# Python Libraries required
 #### Pandas
 #### Sklearn
 #### XGBoost
