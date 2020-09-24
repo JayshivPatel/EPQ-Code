@@ -531,7 +531,7 @@ def Key():
 	window.geometry('1200x675')
 	window.title('Key')
 
-	key = PhotoImage(file = 'key.gif')
+	key = PhotoImage(file = 'Dependencies/key.gif')
 	label2 = Label(window, image = key)
 	btn1 = Button(window, text = 'BACK', command = goback, font = blarge)
 
