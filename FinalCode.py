@@ -254,8 +254,8 @@ def ProfileCreationandTest():
 	label1 = Label(window, text = 'Enter the subject\'s ticket class - (1 = 1st, 2 = 2nd, 3 = 3rd): ')
 	label2 = Label(window, text = 'Enter the subject\'s sex - (m or f):')
 	label3 = Label(window, text = 'Enter the subject\'s age - (0-100):')
-	label4 = Label(window, text = 'Enter the subject\'s number of siblings and spouses abord - (0-15):')
-	label5 = Label(window, text = 'Enter the subject\'s number of parents and children abord - (0-15):')
+	label4 = Label(window, text = 'Enter the subject\'s number of siblings and spouses aboard - (0-15):')
+	label5 = Label(window, text = 'Enter the subject\'s number of parents and children aboard - (0-15):')
 	label6 = Label(window, text = '''Enter the subject\'s passenger fare; in 1912,
 	    £100 would be worth over £11000 today
 	    (typical fares- for 1st class: £50+ , for 2nd class: £20-£50 , for 3rd class: £20 and below):''')
