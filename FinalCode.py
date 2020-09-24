@@ -216,7 +216,7 @@ def ProfileCreationandTest():
 
 
 	#Writing to the temporary file to predict from it later
-	    file = open('temp.csv', 'w+')
+	    file = open('Dependencies/temp.csv', 'w+')
 	    
 	    with file:
 	        write = csv.writer(file)
@@ -328,7 +328,7 @@ def ProfileSelectionandTest():
 	#This outputs the profile and predicted survival
 	def fromcsv():
 
-		file = open('test.csv', 'r')
+		file = open('Dependencies/test.csv', 'r')
 
 		with file:
 		    read = csv.reader(file)
@@ -442,7 +442,7 @@ def TrainData():
 	scrollbar = Scrollbar(frame, orient = VERTICAL)
 	listbox = Listbox(frame, width = 90, yscrollcommand = scrollbar.set)
 	count = 1
-	file = open('train.csv', 'r')
+	file = open('Dependencies/train.csv', 'r')
 
 	for line in file:
 		listbox.insert(count, line)
@@ -474,7 +474,7 @@ def TestData():
 	listbox = Listbox(frame, width = 90, yscrollcommand = scrollbar.set)
 	count = 1
 
-	file = open('test.csv', 'r')
+	file = open('Dependencies/test.csv', 'r')
 	for line in file:
                 listbox.insert(count, line)
                 count+=1
@@ -636,7 +636,7 @@ def impute_and_ohencoder(data):
 #This function extracts the data form the csv file
 def preprocessor_train():
     
-	file_path = 'train.csv'
+	file_path = 'Dependencies/train.csv'
 	data = pd.read_csv(file_path)
 
 	#I will have to remove the name field as this is irrelevant, the ticket field as this contains both letters and 
@@ -655,7 +655,7 @@ def preprocessor_train():
 #This function is similar to the previous one, except extracts data from the test file.
 def preprocessor_test():
     
-	file_path = 'test.csv'
+	file_path = 'Dependencies/test.csv'
 	data = pd.read_csv(file_path)
 	features = ['Pclass', 'Sex', 'Age', 'SibSp', 'Parch', 'Fare', 'Embarked']
 	X = data[features]
@@ -693,7 +693,7 @@ def modelfit(test_data):
 #dataframe for panadas to use and make a prediction on
 def modelfit_fromsave():
     
-	file_path = 'temp.csv'
+	file_path = 'Dependencies/temp.csv'
 	test_data = pd.read_csv(file_path)
 
 	return (modelfit(test_data))
