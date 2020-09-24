@@ -235,9 +235,10 @@ def ProfileCreationandTest():
 	size_getter = Tk()
 	size_getter.withdraw()
 
-	WIDTH, HEIGHT = window.winfo_screenwidth(), window.winfo_screenheight()
+	WIDTH, HEIGHT = size_getter.winfo_screenwidth(), size_getter.winfo_screenheight()
 	geometry = str(WIDTH)+'x'+str(HEIGHT)
-
+	size_getter.destroy()
+	
 	#This contains the window features, each variable is a different feature
 	window = Tk()
 	window.geometry(geometry)
