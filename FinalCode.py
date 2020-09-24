@@ -232,10 +232,15 @@ def ProfileCreationandTest():
 	    
 	    window.destroy()
 
+	size_getter = Tk()
+	size_getter.withdraw()
+
+	WIDTH, HEIGHT = window.winfo_screenwidth(), window.winfo_screenheight()
+	geometry = str(WIDTH)+'x'+str(HEIGHT)
 
 	#This contains the window features, each variable is a different feature
 	window = Tk()
-	window.geometry('1200x630')
+	window.geometry(geometry)
 	window.title('Predicting Survival of External Profile')
 
 	entry1 = Entry(window)
