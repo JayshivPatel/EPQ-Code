@@ -7,7 +7,7 @@
 #### Sklearn
 #### XGBoost
 #### Matplotlib
-##### (Anaconda makes the install process much better)
+##### (Anaconda makes the install process much easier)
 
 Other code and files have been kept for evidence
 
